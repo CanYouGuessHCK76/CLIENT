@@ -6,7 +6,7 @@ export const SocketContext = createContext({
   socket: null,
 });
 
-export const SocketProrvider = ({ children }) => {
+export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     const socket = io("http://localhost:3000");
@@ -19,6 +19,6 @@ export const SocketProrvider = ({ children }) => {
   );
 };
 
-SocketProrvider.propTypes = {
+SocketProvider.propTypes = {
   children: propTypes.node,
 };
