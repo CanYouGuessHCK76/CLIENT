@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function HomePage() {
   return (
     <>
@@ -8,7 +10,11 @@ export default function HomePage() {
           the correct answer. Are you ready to play?
         </p>
         <div className="flex space-x-4">
-          <button className="btn glas btn-lg text-slate-300">Join Room</button>
+          <Link to={"/game/room"}>
+            <button className="btn glas btn-lg text-slate-300">
+              Join Room
+            </button>
+          </Link>
         </div>
       </div>
     </>
