@@ -3,6 +3,7 @@ import Landing from "../pages/Landing";
 import Home from "../pages/Home";
 import Quiz from "../pages/Quiz";
 import LeaderBoard from "../pages/LeaderBoard";
+import Room from "../pages/Room";
 
 export const router = createBrowserRouter([
   {
@@ -21,4 +22,8 @@ export const router = createBrowserRouter([
     path: "leaderboard",
     element: <LeaderBoard />,
   },
+  {
+    path : 'room',
+    element : <Room/>
+  }
 ]);
