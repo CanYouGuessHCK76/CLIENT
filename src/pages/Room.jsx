@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { SocketContext } from "../contexts/appSocket";
 
-
 export default function Room() {
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
@@ -17,10 +16,8 @@ export default function Room() {
     if (!socket) return navigate("/");
 
     socket?.on("StartTheGame", () => {
-      alert("Game will start in 3 seconds!");
-
       setTimeout(() => {
-        navigate("/quiz");
+        navigate("/game/quiz");
       }, 3000);
     });
 
