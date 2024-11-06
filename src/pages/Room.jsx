@@ -1,36 +1,70 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { SocketContext } from "../contexts/appSocket";
+
+
 export default function Room() {
+  const navigate = useNavigate();
+  const { socket } = useContext(SocketContext);
+
+  let [data, setData] = useState([]);
+
+  const handleRoom = () => {
+    socket.emit("GameStart");
+  };
+
+  useEffect(() => {
+    if (!socket) return navigate("/");
+
+    socket?.on("StartTheGame", () => {
+      alert("Game will start in 3 seconds!");
+
+      setTimeout(() => {
+        navigate("/quiz");
+      }, 3000);
+    });
+
+    socket?.emit("username", localStorage.getItem("username"));
+
+    socket?.on("Greetings with username", (data) => {
+      setData(data.users);
+    });
+
+    socket?.on("UsersRemaining", (users) => {
+      setData(users);
+    });
+  }, []);
+
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://i.pinimg.com/originals/58/ed/7f/58ed7f5e8418eba129d13ed6b745bc47.gif')",
-      }}
-    >
-      <div
-        className="font-[sans-serif] overflow-x-auto bg-white bg-opacity-40 backdrop-blur-md shadow-lg rounded-lg p-6 w-full max-w-2xl mx-4"
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
-        }}
-      >
-        <table className="w-full text-lg">
-          <thead className="bg-gray-800">
-            <tr>
-              <th className="p-4 text-left text-base font-semibold text-white">
-                No
-              </th>
-              <th className="p-4 text-left text-base font-semibold text-white">
-                Username
-              </th>
+    <div className="flex flex-col justify-center items-center gap-10 mt-24">
+      <div className="overflow-x-auto bg-amber-50 rounded-md">
+        <table className="table text-lg w-96">
+          <thead>
+            <tr className="bg-neutral-700 text-white text-xl rounded-lg hover:bg-neutral-600 transition-colors duration-300 ease-in-out">
+              <th>No</th>
+              <th>Player</th>
             </tr>
           </thead>
-          <tbody className="whitespace-nowrap">
-            <tr className="even:bg-blue-50">
-              <td className="p-4 text-base text-black">No</td>
-              <td className="p-4 text-base text-black">Username</td>
-            </tr>
+          <tbody>
+            {data?.length === 0 ? (
+              <th>Loading</th>
+            ) : (
+              data?.map((el, i) => (
+                <tr key={i}>
+                  <th>{i + 1}</th>
+                  <td>{el.username}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
+      </div>
+      <div className="text-center">
+        <Link onClick={handleRoom}>
+          <button className="px-8 py-4 bg-white bg-opacity-20 backdrop-blur-md rounded-lg shadow-md text-slate-300 text-lg font-semibold hover:bg-opacity-30 hover:scale-105 hover:shadow-lg transition-all duration-300 ease-in-out">
+            Play
+          </button>
+        </Link>
       </div>
     </div>
   );
