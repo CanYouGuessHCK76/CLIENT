@@ -1,26 +1,27 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:3000"); // Replace with your server URL
+import { useEffect, useContext } from "react";
+import { SocketContext } from "../contexts/appSocket";
 
 export default function Exit() {
   const navigate = useNavigate();
+  const { socket } = useContext(SocketContext);
 
   const handleLogout = () => {
-   
-    socket.emit("logout", socket.id);
-    
+    if (socket) {
+      socket.emit("logout", socket.id);
+    }
+
     localStorage.clear();
     navigate("/");
   };
 
   useEffect(() => {
-    
     return () => {
-      socket.disconnect();
+      if (socket) {
+        socket.disconnect();
+      }
     };
-  }, []);
+  }, [socket]);
 
   return (
     <>
