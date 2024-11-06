@@ -9,7 +9,7 @@ export const SocketContext = createContext({
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io("http://brandbrain.abdulridhoramadhan.my.id");
     setSocket(socket);
   }, []);
   return (
