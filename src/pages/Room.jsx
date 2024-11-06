@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { SocketContext } from "../contexts/appSocket";
+import Swal from "sweetalert2";
 
 export default function Room() {
   const navigate = useNavigate();
@@ -15,22 +16,46 @@ export default function Room() {
   useEffect(() => {
     if (!socket) return navigate("/");
 
-    socket?.on("StartTheGame", () => {
-      setTimeout(() => {
-        navigate("/game/quiz");
-      }, 3000);
+    socket.on("StartTheGame", () => {
+      let countdown = 3;
+
+      // Trigger a SweetAlert2 countdown popup
+      const countdownInterval = setInterval(() => {
+        if (countdown === 0) {
+          clearInterval(countdownInterval);
+          Swal.close(); // Close the Swal popup when countdown ends
+          navigate("/game/quiz");
+        } else {
+          Swal.fire({
+            title: `Game starting in ${countdown}`,
+            text: "Get ready!",
+            timer: 1000,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willClose: () => clearInterval(countdownInterval),
+          });
+          countdown--;
+        }
+      }, 1000);
     });
 
-    socket?.emit("username", localStorage.getItem("username"));
+    socket.emit("username", localStorage.getItem("username"));
 
-    socket?.on("Greetings with username", (data) => {
+    socket.on("Greetings with username", (data) => {
       setData(data.users);
     });
 
-    socket?.on("UsersRemaining", (users) => {
+    socket.on("UsersRemaining", (users) => {
       setData(users);
     });
-  }, []);
+
+    return () => {
+      socket.off("StartTheGame");
+      socket.off("Greetings with username");
+      socket.off("UsersRemaining");
+    };
+  }, [socket, navigate]);
+
 
   return (
     <>
