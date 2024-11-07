@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }) => {
 
   const connectSocket = () => {
     if (socket) socket.disconnect();
-    const newSocket = io("http://brandbrain.abdulridhoramadhan.my.id");
+    const newSocket = io("https://brandbrain.abdulridhoramadhan.my.id");
     setSocket(newSocket);
   };
 

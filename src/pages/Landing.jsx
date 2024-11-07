@@ -62,7 +62,7 @@ export default function Landing() {
           <input
             type="username"
             placeholder="Your username"
-            className="px-4 py-3 bg-neutral-700 w-full text-sm outline-none border-b-2 rounded"
+            className="px-4 py-3 bg-neutral-700 w-full text-sm outline-none border-b-2 rounded text-white"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />

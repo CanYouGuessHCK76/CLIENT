@@ -5,20 +5,18 @@ import data from "../data.json";
 
 export default function Quiz() {
   const [answer, setAnswer] = useState("");
-  const [dataPerItem, setDataPerItem] = useState([]);
+  const [dataPerItem, setDataPerItem] = useState({});
   const [change, setChange] = useState(0);
   const [score, setScore] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
     if (!socket) return navigate("/");
-    let dataMap = data.map((item) => {
-      return item;
-    });
 
-    let dataRandom = dataMap[Math.floor(Math.random() * dataMap.length)];
-    setDataPerItem(dataRandom);
+    setDataPerItem(data[currentIndex]);
+
     localStorage.setItem("score", score);
 
     if (change === 10) {
@@ -28,7 +26,7 @@ export default function Quiz() {
       });
       navigate("/game/leaderboard");
     }
-  }, [change]);
+  }, [change, currentIndex]);
 
   const handleAnswer = (e) => {
     e.preventDefault();
@@ -41,6 +39,7 @@ export default function Quiz() {
     }
 
     setChange(change + 1);
+    setCurrentIndex((prevIndex) => prevIndex + 1);
 
     setAnswer("");
   };
