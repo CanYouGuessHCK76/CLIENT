@@ -10,7 +10,6 @@ export default function LeaderBoard() {
   useEffect(() => {
     socket?.on("showLeaderBoard:broadcast", (leaderBoard) => {
       setLeaderboard(leaderBoard);
-      // console.log(leaderBoard, "==================");
     });
 
     return () => socket?.off("showLeaderBoard:broadcast");
@@ -22,7 +21,7 @@ export default function LeaderBoard() {
         className="min-h-screen flex items-center justify-center bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://png.pngtree.com/thumb_back/fh260/background/20230713/pngtree-3d-rendering-conceptualizing-business-leadership-as-team-direction-image_3869973.jpg')",
+            "url('https://img.freepik.com/free-photo/modern-futuristic-sci-fi-background_35913-2150.jpg?t=st=1730954859~exp=1730958459~hmac=033c84b2d35cda39771b7b1814b2f5dd63ec3011a3e741188088dd46670bc4ab&w=1800')",
         }}
       >
         <div
@@ -31,26 +30,31 @@ export default function LeaderBoard() {
             backgroundColor: "rgba(255, 255, 255, 0.2)",
           }}
         >
-          <table className="w-full text-xl">
-            <thead className="bg-gray-800">
+          <h2 className="text-4xl font-extrabold text-center text-white mb-8 bg-gradient-to-r from-pink-600 to-purple-400 bg-clip-text text-transparent">
+            Leaderboard
+          </h2>
+
+          <table className="w-full text-lg">
+            <thead className="bg-gray-700 text-white">
               <tr>
-                <th className="p-8 text-left text-lg font-bold text-white">
-                  Username
-                </th>
-                <th className="p-8 text-left text-lg font-bold text-white">
-                  Point
-                </th>
-                <th className="p-8 text-left text-lg font-bold text-white">
-                  Time
-                </th>
+                <th className="p-6 text-left font-semibold">Username</th>
+                <th className="p-6 text-left font-semibold">Points</th>
+                <th className="p-6 text-left font-semibold">Time</th>
               </tr>
             </thead>
-            <tbody className="whitespace-nowrap">
+            <tbody className="divide-y divide-gray-700">
               {leaderboard.map((leader, index) => (
-                <tr key={index} className="even:bg-blue-50">
-                  <td className="p-8 text-xl font-serif font-bold text-black">{leader.username}</td>
-                  <td className="p-8 text-xl font-serif font-bold text-black">{leader.score}</td>
-                  <td className="p-8 text-xl font-serif font-bold text-black">{leader.time ?? "N/A"}</td>
+                <tr
+                  key={index}
+                  className="hover:bg-gray-800 transition-colors duration-200"
+                >
+                  <td className="p-6 font-medium text-white">
+                    {leader.username}
+                  </td>
+                  <td className="p-6 font-medium text-white">{leader.score}</td>
+                  <td className="p-6 font-medium text-white">
+                    {leader.time ?? "N/A"}
+                  </td>
                 </tr>
               ))}
             </tbody>
