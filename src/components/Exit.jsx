@@ -1,31 +1,23 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:3000");
+import { useContext } from "react";
+import { SocketContext } from "../contexts/appSocket";
 
 export default function Exit() {
   const navigate = useNavigate();
+  const { socket } = useContext(SocketContext);
 
   const handleLogout = () => {
     if (socket) {
       socket.emit("logout", socket.id);
       socket.disconnect();
     }
-
     localStorage.clear();
     navigate("/");
   };
 
-  useEffect(() => {
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
   return (
     <button
-      className="btn btn-accent text-lg bg-red-500 hover:bg-red-500 text-white absolute"
+      className="btn btn-accent text-lg bg-red-500 hover:bg-red-700 text-white absolute"
       name="Logout"
       onClick={handleLogout}
       style={{
