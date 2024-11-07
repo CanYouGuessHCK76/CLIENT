@@ -10,10 +10,10 @@ export default function Landing() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!username) {
-      Swal.fire({
+      return Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Please put your name before play!",
+        text: "Please put your username before play!",
       });
     }
 
